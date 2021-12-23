@@ -1,2 +1,2 @@
-# RepluginDemo
-RepluginDemo
+# pluggable_app
+Replugin
