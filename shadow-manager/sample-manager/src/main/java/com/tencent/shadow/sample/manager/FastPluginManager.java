@@ -1,8 +1,24 @@
+/*
+ * Tencent is pleased to support the open source community by making Tencent Shadow available.
+ * Copyright (C) 2019 THL A29 Limited, a Tencent company.  All rights reserved.
+ *
+ * Licensed under the BSD 3-Clause License (the "License"); you may not use
+ * this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ *     https://opensource.org/licenses/BSD-3-Clause
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.tencent.shadow.sample.manager;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.RemoteException;
 import android.util.Pair;
 
@@ -69,14 +85,9 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
         for (Map.Entry<String, PluginConfig.PluginFileInfo> plugin : pluginConfig.plugins.entrySet()) {
             final String partKey = plugin.getKey();
             final File apkFile = plugin.getValue().file;
-//            Future extractSo = mFixedPool.submit(new Callable() {
-//                @Override
-//                public Object call() throws Exception {
-//                    extractSo(uuid, partKey, apkFile);
-//                }
-//            });
             Future<Pair<String, String>> extractSo = mFixedPool.submit(() -> extractSo(uuid, partKey, apkFile));
             futures.add(extractSo);
+            extractSoFutures.add(extractSo);
             if (odex) {
                 Future odexPlugin = mFixedPool.submit(new Callable() {
                     @Override
@@ -97,23 +108,18 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
             Pair<String, String> pair = future.get();
             soDirMap.put(pair.first, pair.second);
         }
-        onInstallCompleted(pluginConfig,soDirMap);
+        onInstallCompleted(pluginConfig, soDirMap);
 
         return getInstalledPlugins(1).get(0);
     }
 
 
-    public void startPluginActivity(Context context, InstalledPlugin installedPlugin, String partKey, Intent pluginIntent) throws RemoteException, TimeoutException, FailedException {
-        Intent intent = convertActivityIntent(installedPlugin, partKey, pluginIntent);
-        if (!(context instanceof Activity)) {
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    protected void callApplicationOnCreate(String partKey) throws RemoteException {
+        Map map = mPluginLoader.getLoadedPlugin();
+        Boolean isCall = (Boolean) map.get(partKey);
+        if (isCall == null || !isCall) {
+            mPluginLoader.callApplicationOnCreate(partKey);
         }
-        context.startActivity(intent);
-    }
-
-    public Intent convertActivityIntent(InstalledPlugin installedPlugin, String partKey, Intent pluginIntent) throws RemoteException, TimeoutException, FailedException {
-        loadPlugin(installedPlugin.UUID, partKey);
-        return mPluginLoader.convertActivityIntent(pluginIntent);
     }
 
     private void loadPluginLoaderAndRuntime(String uuid, String partKey) throws RemoteException, TimeoutException, FailedException {
@@ -126,14 +132,10 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
     }
 
     protected void loadPlugin(String uuid, String partKey) throws RemoteException, TimeoutException, FailedException {
-        loadPluginLoaderAndRuntime(uuid,partKey);
+        loadPluginLoaderAndRuntime(uuid, partKey);
         Map map = mPluginLoader.getLoadedPlugin();
         if (!map.containsKey(partKey)) {
             mPluginLoader.loadPlugin(partKey);
-        }
-        Boolean isCall = (Boolean) map.get(partKey);
-        if (isCall == null || !isCall) {
-            mPluginLoader.callApplicationOnCreate(partKey);
         }
     }
 

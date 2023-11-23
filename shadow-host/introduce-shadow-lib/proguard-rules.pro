@@ -19,8 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
--keep class org.slf4j.**{*;}
--keep class com.tencent.shadow.dynamic.impl.**{*;}
-
--keep class com.tencent.shadow.dynamic.loader.**{*;}
