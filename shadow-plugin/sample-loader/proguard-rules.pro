@@ -52,4 +52,3 @@
 -dontwarn  com.tencent.shadow.dynamic.loader.**
 -dontwarn  com.tencent.shadow.core.common.**
 -dontwarn  com.tencent.shadow.core.loader.**
--dontwarn module-info

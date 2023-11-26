@@ -18,13 +18,14 @@
 
 package com.tencent.shadow.sample.manager;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import com.tencent.shadow.core.manager.installplugin.InstalledPlugin;
 import com.tencent.shadow.dynamic.host.EnterCallback;
@@ -34,14 +35,18 @@ import java.util.concurrent.Executors;
 
 
 public class SamplePluginManager extends FastPluginManager {
-
+    private final String TAG = "SamplePluginManager";
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     private Context mCurrentContext;
+    private String pluginZipPath, pluginKyxlZipPath;
 
     public SamplePluginManager(Context context) {
         super(context);
         mCurrentContext = context;
+        pluginZipPath = mCurrentContext.getExternalFilesDir("shadow") + "/plugin-debug.zip";
+        pluginKyxlZipPath = mCurrentContext.getExternalFilesDir("shadow") + "/plugin-kyxl.zip";
+
     }
 
     /**
@@ -57,30 +62,35 @@ public class SamplePluginManager extends FastPluginManager {
      */
     @Override
     protected String getPluginProcessServiceName(String partKey) {
-        if (PART_KEY_PLUGIN_MAIN_APP.equals(partKey)) {
-            return "com.tencent.shadow.sample.host.PluginProcessPPS";
-        } else if (PART_KEY_PLUGIN_BASE.equals(partKey)) {
-            return "com.tencent.shadow.sample.host.PluginProcessPPS";
-        } else if (PART_KEY_PLUGIN_ANOTHER_APP.equals(partKey)) {
-            return "com.tencent.shadow.sample.host.Plugin2ProcessPPS";//在这里支持多个插件
-        } else {
-            //如果有默认PPS，可用return代替throw
-            throw new IllegalArgumentException("unexpected plugin load request: " + partKey);
+        String serviceName = "";
+        if (Constant.PART_KEY_PLUGIN_SAMPLE.equals(partKey)) {
+            serviceName = "com.tencent.shadow.sample.introduce_shadow_lib.MainPluginProcessService";
+        } else if (Constant.PART_KEY_PLUGIN_KYXLSTU.equals(partKey)) {
+            serviceName = "com.tencent.shadow.sample.introduce_shadow_lib.KyxlStuPluginProcessService";
         }
+        Log.d(TAG, "serviceName: " + serviceName);
+        return serviceName;
     }
 
     @Override
     public void enter(final Context context, long fromId, Bundle bundle, final EnterCallback callback) {
-        if (fromId == Constant.FROM_ID_NOOP) {
-            //do nothing.
-        } else if (fromId == Constant.FROM_ID_START_ACTIVITY) {
+        if (fromId == Constant.FROM_ID_START_ACTIVITY) {
+            bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, pluginZipPath);
+            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, Constant.PART_KEY_PLUGIN_SAMPLE);
+            bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.sample.plugin.MainActivity");
             onStartActivity(context, bundle, callback);
-        } else if (fromId == Constant.FROM_ID_CLOSE) {
-            close();
-        } else if (fromId == Constant.FROM_ID_LOAD_VIEW_TO_HOST) {
-            loadViewToHost(context, bundle);
+        } else if (fromId == Constant.FROM_ID_CALL_SERVICE) {
+            bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, pluginZipPath);
+            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, Constant.PART_KEY_PLUGIN_SAMPLE);
+            bundle.putString(Constant.KEY_SERVICE_CLASSNAME, "com.tencent.shadow.sample.plugin.MyService");
+//            callPluginService(context, bundle);
+        } else if (fromId == Constant.FROM_ID_START_KYXL_ACTIVITY) {
+            bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, pluginKyxlZipPath);
+            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, Constant.PART_KEY_PLUGIN_KYXLSTU);
+            bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "com.fifedu.tsdx.ui.activity.login.SplashActivity");
+            onStartActivity(context, bundle, callback);
         } else {
-            throw new IllegalArgumentException("不认识的fromId==" + fromId);
+            Toast.makeText(context, "暂时找不到要打开的页面，请稍后再试", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -118,10 +128,7 @@ public class SamplePluginManager extends FastPluginManager {
                 try {
                     InstalledPlugin installedPlugin = installPlugin(pluginZipPath, null, true);
 
-                    loadPlugin(installedPlugin.UUID, PART_KEY_PLUGIN_BASE);
-                    loadPlugin(installedPlugin.UUID, PART_KEY_PLUGIN_MAIN_APP);
-                    callApplicationOnCreate(PART_KEY_PLUGIN_BASE);
-                    callApplicationOnCreate(PART_KEY_PLUGIN_MAIN_APP);
+                    loadPlugin(installedPlugin.UUID, partKey);
 
                     Intent pluginIntent = new Intent();
                     pluginIntent.setClassName(

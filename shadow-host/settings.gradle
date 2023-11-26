@@ -1,1 +1,1 @@
-include ':sample-host', ':introduce-shadow-lib'
+include ':sample-host', ':sample-host-lib'

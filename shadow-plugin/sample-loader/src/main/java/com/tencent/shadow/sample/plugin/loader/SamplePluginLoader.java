@@ -16,21 +16,27 @@
  *
  */
 
-package com.tencent.shadow.dynamic.loader.impl;
+package com.tencent.shadow.sample.plugin.loader;
 
 import android.content.Context;
 
 import com.tencent.shadow.core.loader.ShadowPluginLoader;
-import com.tencent.shadow.sample.plugin.loader.SamplePluginLoader;
+import com.tencent.shadow.core.loader.managers.ComponentManager;
 
-/**
- * 这个类的包名类名是固定的。
- * <p>
- * 见com.tencent.shadow.dynamic.loader.impl.DynamicPluginLoader#CORE_LOADER_FACTORY_IMPL_NAME
- */
-public class CoreLoaderFactoryImpl implements CoreLoaderFactory {
-    @Override
-    public ShadowPluginLoader build(Context hostAppContext) {
-        return new SamplePluginLoader(hostAppContext);
+public class SamplePluginLoader extends ShadowPluginLoader {
+
+    private final static String TAG = "shadow";
+
+    private ComponentManager componentManager;
+
+    public SamplePluginLoader(Context hostAppContext) {
+        super(hostAppContext);
+        componentManager = new SampleComponentManager(hostAppContext);
     }
+
+    @Override
+    public ComponentManager getComponentManager() {
+        return componentManager;
+    }
+
 }

@@ -16,21 +16,39 @@
  *
  */
 
-package com.tencent.shadow.dynamic.loader.impl;
+package com.tencent.shadow.sample.host.manager;
 
-import android.content.Context;
+import com.tencent.shadow.dynamic.host.PluginManagerUpdater;
 
-import com.tencent.shadow.core.loader.ShadowPluginLoader;
-import com.tencent.shadow.sample.plugin.loader.SamplePluginLoader;
+import java.io.File;
+import java.util.concurrent.Future;
 
-/**
- * 这个类的包名类名是固定的。
- * <p>
- * 见com.tencent.shadow.dynamic.loader.impl.DynamicPluginLoader#CORE_LOADER_FACTORY_IMPL_NAME
- */
-public class CoreLoaderFactoryImpl implements CoreLoaderFactory {
+public class FixedPathPmUpdater implements PluginManagerUpdater {
+
+    final private File apk;
+
+    FixedPathPmUpdater(File apk) {
+        this.apk = apk;
+    }
+
+
     @Override
-    public ShadowPluginLoader build(Context hostAppContext) {
-        return new SamplePluginLoader(hostAppContext);
+    public boolean wasUpdating() {
+        return false;
+    }
+
+    @Override
+    public Future<File> update() {
+        return null;
+    }
+
+    @Override
+    public File getLatest() {
+        return apk;
+    }
+
+    @Override
+    public Future<Boolean> isAvailable(final File file) {
+        return null;
     }
 }

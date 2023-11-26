@@ -24,8 +24,5 @@
 -dontwarn org.slf4j.impl.**
 
 -keep class com.tencent.shadow.core.runtime.**{*;}
-#需要keep在宿主AndroidManifest.xml注册的壳子activity
--keep class com.tencent.shadow.sample.runtime.**{*;}
 
-#GeneratedPluginContainerActivity包含新版本API的接口，可能在业务编译时使用的低版本compileSDK中找不到
--dontwarn com.tencent.shadow.core.runtime.container.GeneratedPluginContainerActivity
+-keep class * extends com.tencent.shadow.core.runtime.container.PluginContainerActivity

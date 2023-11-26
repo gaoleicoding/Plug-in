@@ -16,21 +16,16 @@
  *
  */
 
-package com.tencent.shadow.dynamic.loader.impl;
-
-import android.content.Context;
-
-import com.tencent.shadow.core.loader.ShadowPluginLoader;
-import com.tencent.shadow.sample.plugin.loader.SamplePluginLoader;
+package com.tencent.shadow.dynamic.impl;
 
 /**
- * 这个类的包名类名是固定的。
- * <p>
- * 见com.tencent.shadow.dynamic.loader.impl.DynamicPluginLoader#CORE_LOADER_FACTORY_IMPL_NAME
+ * 此类包名及类名固定
+ * classLoader的白名单
+ * PluginLoader可以加载宿主中位于白名单内的类
  */
-public class CoreLoaderFactoryImpl implements CoreLoaderFactory {
-    @Override
-    public ShadowPluginLoader build(Context hostAppContext) {
-        return new SamplePluginLoader(hostAppContext);
-    }
+public interface WhiteList {
+    String[] sWhiteList = new String[]
+            {
+                    "com.tencent.shadow.sample.host.lib",
+            };
 }

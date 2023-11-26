@@ -1,75 +1,102 @@
+/*
+ * Tencent is pleased to support the open source community by making Tencent Shadow available.
+ * Copyright (C) 2019 THL A29 Limited, a Tencent company.  All rights reserved.
+ *
+ * Licensed under the BSD 3-Clause License (the "License"); you may not use
+ * this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ *     https://opensource.org/licenses/BSD-3-Clause
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.tencent.shadow.sample.host;
 
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.tencent.shadow.dynamic.host.EnterCallback;
-import com.tencent.shadow.dynamic.host.PluginManager;
-import com.tencent.shadow.sample.introduce_shadow_lib.InitApplication;
+import com.tencent.shadow.sample.host.plugin_view.HostAddPluginViewActivity;
+
 
 public class MainActivity extends Activity {
-
-    public static final int FROM_ID_START_ACTIVITY = 1001;
-    public static final int FROM_ID_CALL_SERVICE = 1002;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.TestHostTheme);
 
-        final LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout rootView = new LinearLayout(this);
+        rootView.setOrientation(LinearLayout.VERTICAL);
 
-        TextView textView = new TextView(this);
-        textView.setText("宿主App");
+        TextView infoTextView = new TextView(this);
+        infoTextView.setText(R.string.main_activity_info);
+        rootView.addView(infoTextView);
 
-        Button button = new Button(this);
-        button.setText("启动插件");
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-//                v.setEnabled(false);//防止点击重入
+        final Spinner partKeySpinner = new Spinner(this);
+        ArrayAdapter<String> partKeysAdapter = new ArrayAdapter<>(this, R.layout.part_key_adapter);
+        partKeysAdapter.addAll(
+                Constant.PART_KEY_PLUGIN_MAIN_APP,
+                Constant.PART_KEY_PLUGIN_ANOTHER_APP
+        );
+        partKeySpinner.setAdapter(partKeysAdapter);
 
-                PluginManager pluginManager = InitApplication.getPluginManager();
-                pluginManager.enter(MainActivity.this, FROM_ID_START_ACTIVITY, new Bundle(), new EnterCallback() {
-                    @Override
-                    public void onShowLoadingView(View view) {
-//                        MainActivity.this.setContentView(view);//显示Manager传来的Loading页面
-                    }
+        rootView.addView(partKeySpinner);
 
-                    @Override
-                    public void onCloseLoadingView() {
-//                        MainActivity.this.setContentView(linearLayout);
-                    }
-
-                    @Override
-                    public void onEnterComplete() {
-//                        v.setEnabled(true);
-                    }
-                });
-            }
-        });
-
-        linearLayout.addView(textView);
-        linearLayout.addView(button);
-
-        Button callServiceButton = new Button(this);
-        callServiceButton.setText("调用插件Service，结果打印到Log");
-        callServiceButton.setOnClickListener(new View.OnClickListener() {
+        Button startPluginButton = new Button(this);
+        startPluginButton.setText(R.string.start_plugin);
+        startPluginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.setEnabled(false);//防止点击重入
+                String partKey = (String) partKeySpinner.getSelectedItem();
+                Intent intent = new Intent(MainActivity.this, PluginLoadActivity.class);
+                switch (partKey) {
+                    //为了演示多进程多插件，其实两个插件内容完全一样，除了所在进程
+                    case Constant.PART_KEY_PLUGIN_MAIN_APP:
+                        intent.putExtra(Constant.KEY_PLUGIN_PART_KEY, PART_KEY_PLUGIN_BASE);
+                        break;
+                    case Constant.PART_KEY_PLUGIN_ANOTHER_APP:
+                        intent.putExtra(Constant.KEY_PLUGIN_PART_KEY, partKey);
+                        ;
+                        break;
+                }
 
-                PluginManager pluginManager = InitApplication.getPluginManager();
-                pluginManager.enter(MainActivity.this, FROM_ID_CALL_SERVICE, null, null);
+                switch (partKey) {
+                    //为了演示多进程多插件，其实两个插件内容完全一样，除了所在进程
+                    case Constant.PART_KEY_PLUGIN_MAIN_APP:
+                    case Constant.PART_KEY_PLUGIN_ANOTHER_APP:
+                        intent.putExtra(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.sample.plugin.app.lib.gallery.splash.SplashActivity");
+                        break;
+
+                }
+                startActivity(intent);
             }
         });
+        rootView.addView(startPluginButton);
 
-        linearLayout.addView(callServiceButton);
+        Button startHostAddPluginViewActivityButton = new Button(this);
+        startHostAddPluginViewActivityButton.setText("宿主添加插件View");
+        startHostAddPluginViewActivityButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, HostAddPluginViewActivity.class);
+            startActivity(intent);
+        });
+        rootView.addView(startHostAddPluginViewActivityButton);
 
-        setContentView(linearLayout);
+        setContentView(rootView);
+
     }
+
 }
