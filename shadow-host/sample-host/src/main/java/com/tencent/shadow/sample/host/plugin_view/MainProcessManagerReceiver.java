@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.tencent.shadow.sample.constant.Constant;
+import com.tencent.shadow.sample.host.Constant;
 import com.tencent.shadow.sample.host.HostApplication;
 
 public class MainProcessManagerReceiver extends BroadcastReceiver {

@@ -48,7 +48,7 @@ dependencies {
     implementation "commons-io:commons-io:2.11.0"//sample-host从assets中复制插件用的
     implementation "org.slf4j:slf4j-api:1.7.21"
 
-    implementation 'com.tencent.shadow.dynamic:dynamic-host'
-    implementation 'com.tencent.shadow.core:common'
+    implementation "com.tencent.shadow.dynamic:host:$shadow_version"
+    implementation "com.tencent.shadow.core:common:$shadow_version"
     implementation project(':sample-host-lib')
 }

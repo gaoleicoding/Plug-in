@@ -33,7 +33,7 @@ public class PluginHelper {
     /**
      * 动态加载的插件管理apk
      */
-    public final static String sPluginManagerName = "pluginmanager.apk";
+    public final static String sPluginManagerName = "sample-manager-debug.apk";
 
     /**
      * 动态加载的插件包，里面包含以下几个部分，插件apk，插件框架apk（loader apk和runtime apk）, apk信息配置关系json文件

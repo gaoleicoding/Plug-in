@@ -74,7 +74,6 @@ shadow {
                         businessName = 'sample-plugin'//businessName相同的插件，context获取的Dir是相同的。businessName留空，表示和宿主相同业务，直接使用宿主的Dir。
                         partKey = 'sample-plugin'
                         buildTask = 'assemblePluginDebug'
-                        apkName = 'plugin-app-plugin-debug.apk'
                         apkPath = 'plugin-app/build/outputs/apk/plugin/debug/plugin-app-plugin-debug.apk'
                     }
                 }
@@ -88,7 +87,6 @@ shadow {
                         businessName = 'demo'
                         partKey = 'sample-plugin'
                         buildTask = 'assemblePluginRelease'
-                        apkName = 'plugin-app-plugin-release.apk'
                         apkPath = 'plugin-app/build/outputs/apk/plugin/release/plugin-app-plugin-release.apk'
                     }
                 }

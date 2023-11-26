@@ -1,18 +1,13 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.tencent.shadow.internal.aar-to-jar'
 
 android {
-    compileSdkVersion project.COMPILE_SDK_VERSION
-
-
+    compileSdkVersion 30
     defaultConfig {
-        minSdkVersion project.MIN_SDK_VERSION
-        targetSdkVersion project.TARGET_SDK_VERSION
-        versionCode project.VERSION_CODE
-        versionName project.VERSION_NAME
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        minSdkVersion 20
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "com.tencent.shadow.test.CustomAndroidJUnitRunner"
     }
 
     buildTypes {

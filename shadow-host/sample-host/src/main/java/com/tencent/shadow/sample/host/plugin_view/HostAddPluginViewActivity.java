@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import com.tencent.shadow.sample.host.lib.HostAddPluginViewContainer;
+import com.tencent.shadow.sample.host.lib.HostAddPluginViewContainerHolder;
 
 public class HostAddPluginViewActivity extends Activity implements HostAddPluginViewContainer {
     private ViewGroup mPluginViewContainer;

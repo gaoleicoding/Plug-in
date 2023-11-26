@@ -66,7 +66,7 @@ public class MainActivity extends Activity {
                 switch (partKey) {
                     //为了演示多进程多插件，其实两个插件内容完全一样，除了所在进程
                     case Constant.PART_KEY_PLUGIN_MAIN_APP:
-                        intent.putExtra(Constant.KEY_PLUGIN_PART_KEY, PART_KEY_PLUGIN_BASE);
+                        intent.putExtra(Constant.KEY_PLUGIN_PART_KEY, partKey);
                         break;
                     case Constant.PART_KEY_PLUGIN_ANOTHER_APP:
                         intent.putExtra(Constant.KEY_PLUGIN_PART_KEY, partKey);
