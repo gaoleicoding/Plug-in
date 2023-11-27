@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.tencent.shadow.dynamic.host.EnterCallback;
 import com.tencent.shadow.sample.host.plugin_view.HostAddPluginViewActivity;
 
 
@@ -62,27 +63,17 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String partKey = (String) partKeySpinner.getSelectedItem();
-                Intent intent = new Intent(MainActivity.this, PluginLoadActivity.class);
                 switch (partKey) {
                     //为了演示多进程多插件，其实两个插件内容完全一样，除了所在进程
                     case Constant.PART_KEY_PLUGIN_MAIN_APP:
-                        intent.putExtra(Constant.KEY_PLUGIN_PART_KEY, partKey);
+                        startPlugin(Constant.FROM_ID_START_ACTIVITY);
                         break;
                     case Constant.PART_KEY_PLUGIN_ANOTHER_APP:
-                        intent.putExtra(Constant.KEY_PLUGIN_PART_KEY, partKey);
-                        ;
+                        startPlugin(Constant.FROM_ID_START_ACTIVITY_2);
                         break;
                 }
 
-                switch (partKey) {
-                    //为了演示多进程多插件，其实两个插件内容完全一样，除了所在进程
-                    case Constant.PART_KEY_PLUGIN_MAIN_APP:
-                    case Constant.PART_KEY_PLUGIN_ANOTHER_APP:
-                        intent.putExtra(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.sample.plugin.app.lib.gallery.splash.SplashActivity");
-                        break;
 
-                }
-                startActivity(intent);
             }
         });
         rootView.addView(startPluginButton);
@@ -99,4 +90,36 @@ public class MainActivity extends Activity {
 
     }
 
+    public void startPlugin(int id) {
+
+        PluginHelper.getInstance().singlePool.execute(new Runnable() {
+            @Override
+            public void run() {
+                HostApplication.getApp().loadPluginManager(PluginHelper.getInstance().pluginManagerFile);
+
+                Bundle bundle = new Bundle();
+//                bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, PluginHelper.getInstance().pluginZipFile.getAbsolutePath());
+//                bundle.putString(Constant.KEY_PLUGIN_PART_KEY, getIntent().getStringExtra(Constant.KEY_PLUGIN_PART_KEY));
+//                bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, getIntent().getStringExtra(Constant.KEY_ACTIVITY_CLASSNAME));
+
+                HostApplication.getApp().getPluginManager()
+                        .enter(MainActivity.this, id, bundle, new EnterCallback() {
+                            @Override
+                            public void onShowLoadingView(final View view) {
+
+                            }
+
+                            @Override
+                            public void onCloseLoadingView() {
+                                finish();
+                            }
+
+                            @Override
+                            public void onEnterComplete() {
+
+                            }
+                        });
+            }
+        });
+    }
 }

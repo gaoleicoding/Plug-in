@@ -44,8 +44,8 @@ public class SamplePluginManager extends FastPluginManager {
     public SamplePluginManager(Context context) {
         super(context);
         mCurrentContext = context;
-        pluginZipPath = mCurrentContext.getExternalFilesDir("shadow") + "/plugin-debug.zip";
-        pluginKyxlZipPath = mCurrentContext.getExternalFilesDir("shadow") + "/plugin-kyxl.zip";
+        pluginZipPath = mCurrentContext.getFilesDir() + "/plugin-debug.zip";
+        pluginKyxlZipPath = mCurrentContext.getFilesDir() + "/plugin-kyxl.zip";
 
     }
 
@@ -63,12 +63,13 @@ public class SamplePluginManager extends FastPluginManager {
     @Override
     protected String getPluginProcessServiceName(String partKey) {
         String serviceName = "";
-        if (Constant.PART_KEY_PLUGIN_SAMPLE.equals(partKey)) {
-            serviceName = "com.tencent.shadow.sample.introduce_shadow_lib.MainPluginProcessService";
-        } else if (Constant.PART_KEY_PLUGIN_KYXLSTU.equals(partKey)) {
-            serviceName = "com.tencent.shadow.sample.introduce_shadow_lib.KyxlStuPluginProcessService";
+        if (Constant.PART_KEY_PLUGIN_MAIN_APP.equals(partKey)) {
+            serviceName = "com.tencent.shadow.sample.host.PluginProcessPPS";
+        } else if (Constant.PART_KEY_PLUGIN_ANOTHER_APP.equals(partKey)) {
+            serviceName = "com.tencent.shadow.sample.host.Plugin2ProcessPPS";
         }
-        Log.d(TAG, "serviceName: " + serviceName);
+        Log.d(TAG, "getPluginProcessServiceName partKey: " + partKey);
+        Log.d(TAG, "getPluginProcessServiceName serviceName: " + serviceName);
         return serviceName;
     }
 
@@ -76,17 +77,12 @@ public class SamplePluginManager extends FastPluginManager {
     public void enter(final Context context, long fromId, Bundle bundle, final EnterCallback callback) {
         if (fromId == Constant.FROM_ID_START_ACTIVITY) {
             bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, pluginZipPath);
-            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, Constant.PART_KEY_PLUGIN_SAMPLE);
+            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, Constant.PART_KEY_PLUGIN_MAIN_APP);
             bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.sample.plugin.MainActivity");
             onStartActivity(context, bundle, callback);
-        } else if (fromId == Constant.FROM_ID_CALL_SERVICE) {
-            bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, pluginZipPath);
-            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, Constant.PART_KEY_PLUGIN_SAMPLE);
-            bundle.putString(Constant.KEY_SERVICE_CLASSNAME, "com.tencent.shadow.sample.plugin.MyService");
-//            callPluginService(context, bundle);
-        } else if (fromId == Constant.FROM_ID_START_KYXL_ACTIVITY) {
+        } else if (fromId == Constant.FROM_ID_START_ACTIVITY_2) {
             bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, pluginKyxlZipPath);
-            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, Constant.PART_KEY_PLUGIN_KYXLSTU);
+            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, Constant.PART_KEY_PLUGIN_ANOTHER_APP);
             bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "com.fifedu.tsdx.ui.activity.login.SplashActivity");
             onStartActivity(context, bundle, callback);
         } else {
@@ -127,9 +123,9 @@ public class SamplePluginManager extends FastPluginManager {
             public void run() {
                 try {
                     InstalledPlugin installedPlugin = installPlugin(pluginZipPath, null, true);
-
+                    Log.d(TAG, "loadPlugin partKey: " + partKey);
                     loadPlugin(installedPlugin.UUID, partKey);
-
+                    callApplicationOnCreate(partKey);
                     Intent pluginIntent = new Intent();
                     pluginIntent.setClassName(
                             context.getPackageName(),

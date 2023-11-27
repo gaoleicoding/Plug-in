@@ -139,7 +139,6 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
         }
     }
 
-
     protected abstract String getPluginProcessServiceName(String partKey);
 
 }

@@ -28,7 +28,8 @@ final public class Constant {
     public static final String PART_KEY_PLUGIN_BASE = "sample-base";
 
     public static final int FROM_ID_NOOP = 1000;
-    public static final int FROM_ID_START_ACTIVITY = 1002;
+    public static final int FROM_ID_START_ACTIVITY = 1001;
+    public static final int FROM_ID_START_ACTIVITY_2 = 1002;
     public static final int FROM_ID_CLOSE = 1003;
     public static final int FROM_ID_LOAD_VIEW_TO_HOST = 1004;
 }
