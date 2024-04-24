@@ -1,0 +1,1 @@
+adb push 文件路径 /storage/emulated/0/Android/data/com.tencent.shadow.sample.host/files/shadow

@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    defaultConfig {
+        applicationId "com.tencent.shadow.sample.host"
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.create("release")
+            signingConfig.initWith(buildTypes.debug.signingConfig)
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+
+    //把loader和runtime打包到宿主，不用插件框架自身的升级
+    implementation 'org.slf4j:slf4j-api:2.0.7'
+//common
+    implementation "com.tencent.shadow.core:common:$shadow_version"
+//包含core:runtime和core:load-parameters
+    implementation "com.tencent.shadow.core:loader:$shadow_version"
+//承载插件的容器，runtime
+    implementation "com.tencent.shadow.core:activity-container:$shadow_version"
+//数据库管理插件的
+    implementation "com.tencent.shadow.core:manager:$shadow_version"
+}

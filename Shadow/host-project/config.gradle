@@ -1,0 +1,9 @@
+ext {
+    minSdkVersion = 21
+    targetSdkVersion = 30
+    compileSdkVersion = 30
+
+    androidxVersion = '1.2.0'
+    androidxAnnotation = '1.1.0'
+
+}
