@@ -66,34 +66,49 @@ public class SamplePluginManager extends FastPluginManager {
     @Override
     public void enter(final Context context, long fromId, Bundle bundle, final EnterCallback callback) {
         if (fromId == Constant.FROM_ID_START_ACTIVITY) {
-            bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, pluginZipPath);
-            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, Constant.PART_KEY_PLUGIN_SAMPLE);
-            bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.sample.plugin.MainActivity");
-            onStartActivity(context, bundle, callback);
+            String className = "com.tencent.shadow.sample.plugin.MainActivity";
+            enterActivity(context, bundle, pluginZipPath, Constant.PART_KEY_PLUGIN_SAMPLE, className, callback);
         } else if (fromId == Constant.FROM_ID_CALL_SERVICE) {
             bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, pluginZipPath);
             bundle.putString(Constant.KEY_PLUGIN_PART_KEY, Constant.PART_KEY_PLUGIN_SAMPLE);
             bundle.putString(Constant.KEY_SERVICE_CLASSNAME, "com.tencent.shadow.sample.plugin.MyService");
             callPluginService(context, bundle);
         } else if (fromId == Constant.FROM_ID_START_KYXLSTU_ACTIVITY) {
-            bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, pluginKyxlStuZipPath);
-            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, Constant.PART_KEY_PLUGIN_KYXLSTU);
-            bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.sample.plugin2.MainActivity");
-            onStartActivity(context, bundle, callback);
+            String className = "com.tencent.shadow.sample.plugin2.MainActivity";
+            enterActivity(context, bundle, pluginKyxlStuZipPath, Constant.PART_KEY_PLUGIN_KYXLSTU, className, callback);
+        } else if (fromId == Constant.FROM_ID_START_KYXLSTU_WEBACTIVITY) {
+            String className = "com.tencent.shadow.sample.plugin2.WebViewActivity";
+            enterActivity(context, bundle, pluginKyxlStuZipPath, Constant.PART_KEY_PLUGIN_KYXLSTU, className, callback);
         } else if (fromId == Constant.FROM_ID_START_KYXLTEA_ACTIVITY) {
-            bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, pluginKyxlTeaZipPath);
-            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, Constant.PART_KEY_PLUGIN_KYXLTEA);
-            bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.sample.plugin3.MainActivity");
-            onStartActivity(context, bundle, callback);
+            String className = "com.tencent.shadow.sample.plugin3.MainActivity";
+            enterActivity(context, bundle, pluginKyxlTeaZipPath, Constant.PART_KEY_PLUGIN_KYXLTEA, className, callback);
+        } else if (fromId == Constant.FROM_ID_START_KYXLTEA_WEBACTIVITY) {
+            String className = "com.tencent.shadow.sample.plugin3.WebViewActivity";
+            enterActivity(context, bundle, pluginKyxlTeaZipPath, Constant.PART_KEY_PLUGIN_KYXLTEA, className, callback);
         } else {
             Toast.makeText(context, "暂时找不到要打开的页面，请稍后再试", Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void enterActivity(Context context, Bundle bundle, String zipPath, String partKey, String className, EnterCallback callback) {
+        bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, zipPath);
+        bundle.putString(Constant.KEY_PLUGIN_PART_KEY, partKey);
+        bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, className);
+        onStartActivity(context, bundle, callback);
+    }
+
     private void onStartActivity(final Context context, Bundle bundle, final EnterCallback callback) {
+        final String url = bundle.getString("url");
+        final String token = bundle.getString("token");
         final String pluginZipPath = bundle.getString(Constant.KEY_PLUGIN_ZIP_PATH);
         final String partKey = bundle.getString(Constant.KEY_PLUGIN_PART_KEY);
         final String className = bundle.getString(Constant.KEY_ACTIVITY_CLASSNAME);
+        Log.e(TAG, "onStartActivity url：" + url);
+        Log.e(TAG, "onStartActivity token：" + token);
+        Log.e(TAG, "onStartActivity pluginZipPath：" + pluginZipPath);
+        Log.e(TAG, "onStartActivity partKey：" + partKey);
+        Log.e(TAG, "onStartActivity className：" + className);
+
         if (className == null) {
             throw new NullPointerException("className == null");
         }
@@ -115,6 +130,9 @@ public class SamplePluginManager extends FastPluginManager {
                             context.getPackageName(),
                             className
                     );
+                    //传递 url参数
+                    pluginIntent.putExtra("url", url);
+                    pluginIntent.putExtra("token", token);
                     if (extras != null) {
                         pluginIntent.replaceExtras(extras);
                     }

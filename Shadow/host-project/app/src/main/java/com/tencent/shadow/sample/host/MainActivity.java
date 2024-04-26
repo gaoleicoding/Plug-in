@@ -1,6 +1,7 @@
 package com.tencent.shadow.sample.host;
 
 import android.app.Activity;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,12 +13,9 @@ import com.tencent.shadow.sample.introduce_shadow_lib.InitKyxlStuApplication;
 import com.tencent.shadow.sample.introduce_shadow_lib.InitKyxlTeaApplication;
 
 public class MainActivity extends Activity {
-
-    public static final int FROM_ID_START_ACTIVITY = 1001;
-    public static final int FROM_ID_CALL_SERVICE = 1002;
-    public static final int FROM_ID_START_KYXLSTU_ACTIVITY = 1003;
-    public static final int FROM_ID_START_KYXLTEA_ACTIVITY = 1004;
     Button bt_plugin, bt_service, bt_plugin_stu, bt_plugin_tea;
+    private final String HOST_BROADCAST_ACTION = "HOST_BROADCAST_ACTION";
+    private HostBroadcastReceiver hostBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,17 +32,15 @@ public class MainActivity extends Activity {
                 v.setEnabled(false);//防止点击重入
 
                 PluginManager pluginManager = InitApplication.getPluginManager();
-                pluginManager.enter(MainActivity.this, FROM_ID_START_ACTIVITY, new Bundle(), new EnterCallback() {
+                pluginManager.enter(MainActivity.this, Constant.FROM_ID_START_ACTIVITY, new Bundle(), new EnterCallback() {
                     @Override
                     public void onShowLoadingView(View view) {
 //                        MainActivity.this.setContentView(view);//显示Manager传来的Loading页面
                     }
-
                     @Override
                     public void onCloseLoadingView() {
 //                        MainActivity.this.setContentView(linearLayout);
                     }
-
                     @Override
                     public void onEnterComplete() {
                         v.setEnabled(true);
@@ -59,15 +55,13 @@ public class MainActivity extends Activity {
                 v.setEnabled(false);//防止点击重入
 
                 PluginManager pluginManager = InitApplication.getPluginManager();
-                pluginManager.enter(MainActivity.this, FROM_ID_CALL_SERVICE, new Bundle(), new EnterCallback() {
+                pluginManager.enter(MainActivity.this, Constant.FROM_ID_CALL_SERVICE, new Bundle(), new EnterCallback() {
                     @Override
                     public void onShowLoadingView(View view) {
                     }
-
                     @Override
                     public void onCloseLoadingView() {
                     }
-
                     @Override
                     public void onEnterComplete() {
                         v.setEnabled(true);
@@ -81,17 +75,17 @@ public class MainActivity extends Activity {
                 v.setEnabled(false);//防止点击重入
 
                 PluginManager pluginManager = InitKyxlStuApplication.getPluginManager();
-                pluginManager.enter(MainActivity.this, FROM_ID_START_KYXLSTU_ACTIVITY, new Bundle(), new EnterCallback() {
+                Bundle bundle = new Bundle();
+                bundle.putString("url", "https://www.baidu.com");
+                pluginManager.enter(MainActivity.this, Constant.FROM_ID_START_KYXLSTU_ACTIVITY, bundle, new EnterCallback() {
                     @Override
                     public void onShowLoadingView(View view) {
 //                        MainActivity.this.setContentView(view);//显示Manager传来的Loading页面
                     }
-
                     @Override
                     public void onCloseLoadingView() {
 //                        MainActivity.this.setContentView(linearLayout);
                     }
-
                     @Override
                     public void onEnterComplete() {
                         v.setEnabled(true);
@@ -105,17 +99,15 @@ public class MainActivity extends Activity {
                 v.setEnabled(false);//防止点击重入
 
                 PluginManager pluginManager = InitKyxlTeaApplication.getPluginManager();
-                pluginManager.enter(MainActivity.this, FROM_ID_START_KYXLTEA_ACTIVITY, new Bundle(), new EnterCallback() {
+                pluginManager.enter(MainActivity.this, Constant.FROM_ID_START_KYXLTEA_ACTIVITY, new Bundle(), new EnterCallback() {
                     @Override
                     public void onShowLoadingView(View view) {
 //                        MainActivity.this.setContentView(view);//显示Manager传来的Loading页面
                     }
-
                     @Override
                     public void onCloseLoadingView() {
 //                        MainActivity.this.setContentView(linearLayout);
                     }
-
                     @Override
                     public void onEnterComplete() {
                         v.setEnabled(true);
@@ -123,6 +115,15 @@ public class MainActivity extends Activity {
                 });
             }
         });
-
+        // 注册广播接收器
+        hostBroadcastReceiver = new HostBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter(HOST_BROADCAST_ACTION);
+        registerReceiver(hostBroadcastReceiver, intentFilter);
     }
+
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(hostBroadcastReceiver);
+    }
+
 }

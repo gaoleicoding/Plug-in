@@ -1,6 +1,5 @@
 package com.tencent.shadow.sample.host;
 
-import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.os.Build;
@@ -30,7 +29,7 @@ public class MyApplication extends Application {
     @RequiresApi(api = 28)
     public void webviewSetPath(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            String processName = getProcessName(context);
+            String processName = Utils.getProcessName(context);
 
             if (!getApplicationContext().getPackageName().equals(processName)) {//判断不等于默认进程名称
                 WebView.setDataDirectorySuffix(processName);
@@ -38,15 +37,5 @@ public class MyApplication extends Application {
         }
     }
 
-    public String getProcessName(Context context) {
-        if (context == null) return null;
-        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningAppProcessInfo processInfo : manager.getRunningAppProcesses()) {
-            if (processInfo.pid == android.os.Process.myPid()) {
-                return processInfo.processName;
-            }
-        }
-        return null;
-    }
 
 }

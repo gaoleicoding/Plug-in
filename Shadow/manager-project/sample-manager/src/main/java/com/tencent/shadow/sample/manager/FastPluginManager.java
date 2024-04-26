@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoader {
-
+    private final String TAG = "FastPluginManager";
     private static final Logger mLogger = LoggerFactory.getLogger(FastPluginManager.class);
 
     private ExecutorService mFixedPool = Executors.newFixedThreadPool(4);
@@ -110,7 +110,7 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
         return mPluginLoader.convertActivityIntent(pluginIntent);
     }
 
-    private void loadPluginLoaderAndRuntime(String uuid,String partKey) throws RemoteException, TimeoutException, FailedException {
+    private void loadPluginLoaderAndRuntime(String uuid, String partKey) throws RemoteException, TimeoutException, FailedException {
         if (mPpsController == null) {
             bindPluginProcessService(getPluginProcessServiceName(partKey));
             waitServiceConnected(10, TimeUnit.SECONDS);
@@ -120,7 +120,7 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
     }
 
     protected void loadPlugin(String uuid, String partKey) throws RemoteException, TimeoutException, FailedException {
-        loadPluginLoaderAndRuntime(uuid,partKey);
+        loadPluginLoaderAndRuntime(uuid, partKey);
         Map map = mPluginLoader.getLoadedPlugin();
         if (!map.containsKey(partKey)) {
             mPluginLoader.loadPlugin(partKey);

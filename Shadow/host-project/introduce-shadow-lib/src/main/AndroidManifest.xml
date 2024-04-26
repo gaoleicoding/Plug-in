@@ -24,7 +24,6 @@
             android:hardwareAccelerated="true"
             android:launchMode="standard"
             android:process=":plugin"
-            android:screenOrientation="portrait"
             android:theme="@style/PluginContainerActivity" />
         <activity
             android:name="com.tencent.shadow.sample.runtime.PluginSingleInstance1ProxyActivity"
@@ -49,7 +48,6 @@
             android:hardwareAccelerated="true"
             android:launchMode="standard"
             android:process=":plugin.kyxlstu"
-            android:screenOrientation="portrait"
             android:theme="@style/PluginContainerActivity" />
         <activity
             android:name="com.tencent.shadow.sample.runtime.KyxlStuPluginSingleInstance1ProxyActivity"
@@ -74,7 +72,6 @@
             android:hardwareAccelerated="true"
             android:launchMode="standard"
             android:process=":plugin.kyxltea"
-            android:screenOrientation="portrait"
             android:theme="@style/PluginContainerActivity" />
         <activity
             android:name="com.tencent.shadow.sample.runtime.KyxlTeaPluginSingleInstance1ProxyActivity"

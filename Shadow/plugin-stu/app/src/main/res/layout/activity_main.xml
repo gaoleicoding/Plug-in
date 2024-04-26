@@ -23,6 +23,24 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/bt_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="跳转WebView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
             android:id="@+id/bt_host"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,7 +48,6 @@
             android:text="和宿主交互" />
 
         <TextView
-            android:id="@+id/tv_host"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp" />
@@ -50,7 +67,6 @@
             android:text="和教师端交互" />
 
         <TextView
-            android:id="@+id/tv_plugin3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp" />
