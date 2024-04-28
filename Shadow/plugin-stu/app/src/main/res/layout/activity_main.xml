@@ -41,7 +41,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/bt_host"
+            android:id="@+id/bt_interact_host"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -60,7 +60,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/bt_plugin3"
+            android:id="@+id/bt_interact_tea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

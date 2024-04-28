@@ -11,10 +11,10 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button bt_host = findViewById(R.id.bt_host);
-        Button bt_plugin_stu = findViewById(R.id.bt_plugin_stu);
-        Button bt_plugin_tea = findViewById(R.id.bt_plugin_tea);
-        bt_host.setOnClickListener(new View.OnClickListener() {
+        Button bt_interact_host = findViewById(R.id.bt_interact_host);
+        Button bt_interact_stu = findViewById(R.id.bt_interact_stu);
+        Button bt_interact_tea = findViewById(R.id.bt_interact_tea);
+        bt_interact_host.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -24,23 +24,23 @@ public class MainActivity extends Activity {
                 sendBroadcast(intent);
             }
         });
-        bt_plugin_stu.setOnClickListener(new View.OnClickListener() {
+        bt_interact_stu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setAction("HOST_BROADCAST_ACTION");
-                intent.putExtra("PLUGIN_KEY", Constant.FROM_PLUGIN_KEY_SKIP_TO_STU);
-                intent.putExtra("PLUGIN_VALUE", Constant.FROM_PLUGIN_VALUE_SKIP_TO_STU);
+                intent.putExtra("PLUGIN_KEY", Constant.FROM_PLUGIN_KEY_SKIP_TO_STU_WEB);
+                intent.putExtra("PLUGIN_VALUE", Constant.FROM_PLUGIN_VALUE_SKIP_TO_STU_WEB);
                 sendBroadcast(intent);
             }
         });
-        bt_plugin_tea.setOnClickListener(new View.OnClickListener() {
+        bt_interact_tea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setAction("HOST_BROADCAST_ACTION");
-                intent.putExtra("PLUGIN_KEY", Constant.FROM_PLUGIN_KEY_SKIP_TO_TEA);
-                intent.putExtra("PLUGIN_VALUE", Constant.FROM_PLUGIN_VALUE_SKIP_TO_TEA);
+                intent.putExtra("PLUGIN_KEY", Constant.FROM_PLUGIN_KEY_SKIP_TO_TEA_WEB);
+                intent.putExtra("PLUGIN_VALUE", Constant.FROM_PLUGIN_VALUE_SKIP_TO_TEA_WEB);
                 sendBroadcast(intent);
             }
         });

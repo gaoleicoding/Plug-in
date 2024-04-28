@@ -25,42 +25,40 @@ class HostBroadcastReceiver extends BroadcastReceiver {
         String value = intent.getStringExtra("PLUGIN_VALUE");
         if (Constant.FROM_PLUGIN_KEY_SEND_TO_HOST.equals(key)) {
             Toast.makeText(context, "宿主：" + value, Toast.LENGTH_SHORT).show();
-        } else if (Constant.FROM_PLUGIN_KEY_SKIP_TO_STU.equals(key)) {
+        } else if (Constant.FROM_KYXLSTU_KEY_SEND_TO_HOST.equals(key)) {
+            Toast.makeText(context, "宿主：" + value, Toast.LENGTH_SHORT).show();
+        } else if (Constant.FROM_KYXLTEA_KEY_SEND_TO_HOST.equals(key)) {
+            Toast.makeText(context, "宿主：" + value, Toast.LENGTH_SHORT).show();
+        } else if (Constant.FROM_PLUGIN_KEY_SKIP_TO_STU_WEB.equals(key)) {
             PluginManager pluginManager = InitKyxlStuApplication.getPluginManager();
             Bundle bundle = new Bundle();
             bundle.putString("url", value);
-            pluginManager.enter(context, Constant.FROM_ID_START_KYXLSTU_WEBACTIVITY, bundle, new EnterCallback() {
-                @Override
-                public void onShowLoadingView(View view) {
-                    Log.e(TAG, "onShowLoadingView");
-                }
-                @Override
-                public void onCloseLoadingView() {
-                    Log.e(TAG, "onCloseLoadingView");
-                }
-                @Override
-                public void onEnterComplete() {
-                    Log.e(TAG, "onEnterComplete");
-                }
-            });
-        } else if (Constant.FROM_PLUGIN_KEY_SKIP_TO_TEA.equals(key)) {
+            enterActivity(context, Constant.FROM_ID_START_KYXLSTU_WEBACTIVITY, bundle, pluginManager);
+        } else if (Constant.FROM_PLUGIN_KEY_SKIP_TO_TEA_WEB.equals(key)) {
             PluginManager pluginManager = InitKyxlTeaApplication.getPluginManager();
             Bundle bundle = new Bundle();
             bundle.putString("url", value);
-            pluginManager.enter(context, Constant.FROM_ID_START_KYXLTEA_WEBACTIVITY, bundle, new EnterCallback() {
-                @Override
-                public void onShowLoadingView(View view) {
-                    Log.e(TAG, "onShowLoadingView");
-                }
-                @Override
-                public void onCloseLoadingView() {
-                    Log.e(TAG, "onCloseLoadingView");
-                }
-                @Override
-                public void onEnterComplete() {
-                    Log.e(TAG, "onEnterComplete");
-                }
-            });
+            enterActivity(context, Constant.FROM_ID_START_KYXLTEA_WEBACTIVITY, bundle, pluginManager);
         }
+    }
+
+    private void enterActivity(Context context, int flag, Bundle bundle, PluginManager pluginManager) {
+
+        pluginManager.enter(context, flag, bundle, new EnterCallback() {
+            @Override
+            public void onShowLoadingView(View view) {
+                Log.e(TAG, "onShowLoadingView");
+            }
+
+            @Override
+            public void onCloseLoadingView() {
+                Log.e(TAG, "onCloseLoadingView");
+            }
+
+            @Override
+            public void onEnterComplete() {
+                Log.e(TAG, "onEnterComplete");
+            }
+        });
     }
 }
