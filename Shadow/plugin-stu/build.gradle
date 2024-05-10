@@ -8,6 +8,14 @@ buildscript {
         } else {
             google()
             mavenCentral()
+            maven { url 'https://jitpack.io' }
+        }
+        maven {
+            url 'http://nexus.iflyhed.com:84/nexus/repository/maven-releases/'
+            credentials {
+                username = "admin"
+                password = "Tknluzhree3SWllq"
+            }
         }
     }
     dependencies {
@@ -24,6 +32,14 @@ allprojects {
         } else {
             google()
             mavenCentral()
+            maven { url 'https://jitpack.io' }
+        }
+        maven {
+            url 'http://nexus.iflyhed.com:84/nexus/repository/maven-releases/'
+            credentials {
+                username = "admin"
+                password = "Tknluzhree3SWllq"
+            }
         }
         maven {
             name = "GitHubPackages"

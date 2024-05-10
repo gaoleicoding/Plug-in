@@ -9,6 +9,13 @@ buildscript {
             google()
             mavenCentral()
         }
+        maven {
+            url 'http://nexus.iflyhed.com:84/nexus/repository/maven-releases/'
+            credentials {
+                username = "admin"
+                password = "Tknluzhree3SWllq"
+            }
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.2'
@@ -24,6 +31,13 @@ allprojects {
         } else {
             google()
             mavenCentral()
+        }
+        maven {
+            url 'http://nexus.iflyhed.com:84/nexus/repository/maven-releases/'
+            credentials {
+                username = "admin"
+                password = "Tknluzhree3SWllq"
+            }
         }
         maven {
             name = "GitHubPackages"

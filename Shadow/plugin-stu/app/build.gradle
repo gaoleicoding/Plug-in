@@ -9,7 +9,6 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -34,6 +33,9 @@ dependencies {
     //Shadow Transform后业务代码会有一部分实际引用runtime中的类
     //如果不以compileOnly方式依赖，会导致其他Transform或者Proguard找不到这些类
     pluginCompileOnly "com.tencent.shadow.core:runtime:$shadow_version"
+    pluginCompileOnly project(":sample-host-lib")
+    compileOnly "fifedu_android:lib_common_utils:$rootProject.commonUtils"
+    api 'com.github.getActivity:XXPermissions:18.63'
 }
 
 //这段buildscript配置的dependencies是为了apply plugin: 'com.tencent.shadow.plugin'能找到实现
@@ -71,10 +73,12 @@ shadow {
                 runtimeApkConfig = new Tuple2('sample-runtime-debug.apk', ':sample-runtime:assembleDebug')
                 pluginApks {
                     pluginApk1 {
-                        businessName = 'kyxlstu-plugin'//businessName相同的插件，context获取的Dir是相同的。businessName留空，表示和宿主相同业务，直接使用宿主的Dir。
+                        businessName = 'kyxlstu-plugin'
+//businessName相同的插件，context获取的Dir是相同的。businessName留空，表示和宿主相同业务，直接使用宿主的Dir。
                         partKey = 'kyxlstu-plugin'
                         buildTask = 'assemblePluginDebug'
                         apkPath = 'app/build/outputs/apk/plugin/debug/app-plugin-debug.apk'
+                        hostWhiteList = ["com.fifedu.lib_common_utils.**"]
                     }
                 }
             }
@@ -88,6 +92,7 @@ shadow {
                         partKey = 'kyxlstu-plugin'
                         buildTask = 'assemblePluginRelease'
                         apkPath = 'app/build/outputs/apk/plugin/release/app-plugin-release.apk'
+                        hostWhiteList = ["com.fifedu.lib_common_utils.**"]
                     }
                 }
             }

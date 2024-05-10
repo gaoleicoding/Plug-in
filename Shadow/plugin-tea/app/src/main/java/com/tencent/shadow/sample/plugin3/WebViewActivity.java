@@ -23,7 +23,6 @@ public class WebViewActivity extends Activity {
     private WebView mWebview;
     private TextView mTvTitle;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

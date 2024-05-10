@@ -17,42 +17,33 @@
         android:layout_height="1dp"
         android:background="#f5f5f5" />
 
-    <LinearLayout
+    <Button
+        android:id="@+id/bt_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="10dp"
+        android:text="跳转WebView" />
 
-        <Button
-            android:id="@+id/bt_skip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="跳转WebView" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
-    </LinearLayout>
-
-    <LinearLayout
+    <Button
+        android:id="@+id/bt_interact_host"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="10dp"
+        android:text="和宿主交互" />
 
-        <Button
-            android:id="@+id/bt_interact_host"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="和宿主交互" />
+    <Button
+        android:id="@+id/bt_interact_tea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="和教师端交互" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
-    </LinearLayout>
-
+    <Button
+        android:id="@+id/bt_network_util"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="使用宿主NetWork能力" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -60,15 +51,30 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/bt_interact_tea"
+            android:id="@+id/bt_glide_util"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="和教师端交互" />
+            android:text="使用宿主Glide能力" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
+        <ImageView
+            android:id="@+id/iv_photo"
+            android:layout_width="40dp"
+            android:layout_height="60dp" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_dialog_util"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="使用宿主Dialog能力" />
+
+    <Button
+        android:id="@+id/bt_permission_util"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="使用宿主Permission能力" />
+
 </LinearLayout>

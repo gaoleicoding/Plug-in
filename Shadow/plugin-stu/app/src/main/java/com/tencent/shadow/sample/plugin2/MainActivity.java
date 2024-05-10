@@ -6,6 +6,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+
+import com.fifedu.lib_common_utils.dialog.BaseDialogCallBack;
+import com.fifedu.lib_common_utils.dialog.BaseDialogUtils;
+import com.fifedu.lib_common_utils.glide.GlideUtil;
+import com.fifedu.lib_common_utils.permission.PermissionCallBack;
+import com.fifedu.lib_common_utils.permission.PermissionUtils;
 
 
 public class MainActivity extends Activity {
@@ -19,7 +26,13 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         Button bt_skip = findViewById(R.id.bt_skip);
         Button bt_interact_host = findViewById(R.id.bt_interact_host);
+        Button bt_network_util = findViewById(R.id.bt_network_util);
+        Button bt_dialog_util = findViewById(R.id.bt_dialog_util);
+        Button bt_glide_util = findViewById(R.id.bt_glide_util);
+        ImageView iv_photo = findViewById(R.id.iv_photo);
+        Button bt_permission_util = findViewById(R.id.bt_permission_util);
         Button bt_interact_tea = findViewById(R.id.bt_interact_tea);
+
         String url = getIntent().getStringExtra("url");
         Log.e(TAG, "stu MainActivity url:" + url);
 
@@ -47,6 +60,51 @@ public class MainActivity extends Activity {
                 Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
                 intent.putExtra("url", loadUrl);
                 startActivity(intent);
+            }
+        });
+        bt_network_util.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.getPersonalCenter();
+
+            }
+        });
+        bt_glide_util.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String posterUrl = "https://t7.baidu.com/it/u=1190388788,2005197677&fm=193";
+                GlideUtil.loadImg(iv_photo, posterUrl);
+
+            }
+        });
+        bt_dialog_util.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BaseDialogUtils.createCommonDialog(MainActivity.this, "确定要退出吗", "", "确定", "取消", BaseDialogUtils.DIALOG_SHOWTYPE_NORMAL, true, new BaseDialogCallBack() {
+
+                    @Override
+                    public void onConfirm() {
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+                });
+            }
+        });
+        bt_permission_util.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PermissionUtils.requestPermissions(MainActivity.this, false, new PermissionCallBack() {
+                    @Override
+                    public void onGranted() {
+
+                    }
+
+                }, PermissionUtils.PERMISSIONS_VIDEO_SIMPLE);
+
             }
         });
     }

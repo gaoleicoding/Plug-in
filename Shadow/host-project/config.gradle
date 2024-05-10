@@ -6,4 +6,13 @@ ext {
     androidxVersion = '1.2.0'
     androidxAnnotation = '1.1.0'
 
+    // maven上托管的自研库
+    commonBusiness = '1.4.4'
+    commonWebview = '1.0.3'
+    commonNdk = '1.0.1'
+    commonUtils = '1.1.3'
+    commonVideo = '1.0.3'
+    commonAudiorecord = '1.0.1'
+    commonSpeech = '1.1.2'
+    commonUI = '1.0.0'
 }

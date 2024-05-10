@@ -1,6 +1,7 @@
 package com.tencent.shadow.sample.host;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +14,7 @@ import com.tencent.shadow.sample.introduce_shadow_lib.InitKyxlStuApplication;
 import com.tencent.shadow.sample.introduce_shadow_lib.InitKyxlTeaApplication;
 
 public class MainActivity extends Activity {
-    Button bt_plugin, bt_service, bt_plugin_stu, bt_plugin_tea;
+    Button bt_plugin, bt_service, bt_plugin_stu, bt_plugin_tea, bt_common_util, bt_add_plugin_view;
     private final String HOST_BROADCAST_ACTION = "HOST_BROADCAST_ACTION";
     private HostBroadcastReceiver hostBroadcastReceiver;
 
@@ -25,6 +26,8 @@ public class MainActivity extends Activity {
         bt_service = findViewById(R.id.bt_service);
         bt_plugin_stu = findViewById(R.id.bt_plugin_stu);
         bt_plugin_tea = findViewById(R.id.bt_plugin_tea);
+        bt_common_util = findViewById(R.id.bt_common_util);
+        bt_add_plugin_view = findViewById(R.id.bt_add_plugin_view);
 
         bt_plugin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,10 +40,12 @@ public class MainActivity extends Activity {
                     public void onShowLoadingView(View view) {
 //                        MainActivity.this.setContentView(view);//显示Manager传来的Loading页面
                     }
+
                     @Override
                     public void onCloseLoadingView() {
 //                        MainActivity.this.setContentView(linearLayout);
                     }
+
                     @Override
                     public void onEnterComplete() {
                         v.setEnabled(true);
@@ -59,9 +64,11 @@ public class MainActivity extends Activity {
                     @Override
                     public void onShowLoadingView(View view) {
                     }
+
                     @Override
                     public void onCloseLoadingView() {
                     }
+
                     @Override
                     public void onEnterComplete() {
                         v.setEnabled(true);
@@ -82,10 +89,12 @@ public class MainActivity extends Activity {
                     public void onShowLoadingView(View view) {
 //                        MainActivity.this.setContentView(view);//显示Manager传来的Loading页面
                     }
+
                     @Override
                     public void onCloseLoadingView() {
 //                        MainActivity.this.setContentView(linearLayout);
                     }
+
                     @Override
                     public void onEnterComplete() {
                         v.setEnabled(true);
@@ -104,15 +113,30 @@ public class MainActivity extends Activity {
                     public void onShowLoadingView(View view) {
 //                        MainActivity.this.setContentView(view);//显示Manager传来的Loading页面
                     }
+
                     @Override
                     public void onCloseLoadingView() {
 //                        MainActivity.this.setContentView(linearLayout);
                     }
+
                     @Override
                     public void onEnterComplete() {
                         v.setEnabled(true);
                     }
                 });
+            }
+        });
+        bt_common_util.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                Utils.getPersonalCenter();
+            }
+        });
+        bt_add_plugin_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                Intent intent = new Intent(MainActivity.this, HostAddPluginViewActivity.class);
+                startActivity(intent);
             }
         });
         // 注册广播接收器

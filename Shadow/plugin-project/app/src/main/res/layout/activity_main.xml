@@ -17,60 +17,27 @@
         android:layout_height="1dp"
         android:background="#f5f5f5" />
 
-    <LinearLayout
+    <Button
+        android:id="@+id/bt_interact_host"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="10dp"
+        android:text="和宿主交互" />
 
-        <Button
-            android:id="@+id/bt_interact_host"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="和宿主交互" />
 
-        <TextView
-            android:id="@+id/tv_host"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
-    </LinearLayout>
-
-    <LinearLayout
+    <Button
+        android:id="@+id/bt_interact_stu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="10dp"
+        android:text="和学生端交互" />
 
-        <Button
-            android:id="@+id/bt_interact_stu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="和学生端交互" />
 
-        <TextView
-            android:id="@+id/tv_plugin2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
-    </LinearLayout>
-
-    <LinearLayout
+    <Button
+        android:id="@+id/bt_interact_tea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="10dp"
+        android:text="和教师端交互" />
 
-        <Button
-            android:id="@+id/bt_interact_tea"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="和教师端交互" />
-
-        <TextView
-            android:id="@+id/tv_plugin3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
-    </LinearLayout>
 </LinearLayout>

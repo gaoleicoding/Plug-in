@@ -1,1 +1,2 @@
 include ':app', ':introduce-shadow-lib'
+include ':sample-host-lib'

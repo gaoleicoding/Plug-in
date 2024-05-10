@@ -27,4 +27,8 @@ dependencies {
     implementation project(':introduce-shadow-lib')
     //如果introduce-shadow-lib发布到Maven，在pom中写明此依赖，宿主就不用写这个依赖了。
     implementation "com.tencent.shadow.dynamic:host:$shadow_version"
+    api "fifedu_android:lib_common_utils:$rootProject.commonUtils"
+    implementation project(':sample-host-lib')
+//    implementation 'com.tencent.shadow.core:common'
+//    implementation 'com.tencent.shadow.dynamic:dynamic-host'
 }

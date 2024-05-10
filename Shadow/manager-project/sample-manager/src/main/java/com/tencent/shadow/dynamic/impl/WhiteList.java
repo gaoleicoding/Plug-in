@@ -7,6 +7,6 @@ package com.tencent.shadow.dynamic.impl;
  */
 public interface WhiteList {
     String[] sWhiteList = new String[]
-            {
+            {"com.fifedu.lib_common_utils"
             };
 }
